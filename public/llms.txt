@@ -1,0 +1,27 @@
+# Colombia Mods 3D
+
+> Colombia Mods 3D crea mods y modelos 3D personalizados para simuladores de conducción, principalmente American Truck Simulator: camiones, trailers y accesorios. Incluye un launcher oficial para Windows con tienda de mods, garage, plugins y actualizaciones automáticas. Las compras y el soporte se atienden por Discord.
+
+## Sitio web
+
+- [Inicio](https://colombiamods3d.com/): presentación de la marca, camión 3D interactivo y mods destacados.
+- [Catálogo de mods](https://colombiamods3d.com/catalogo): camiones, trailers y accesorios con precio, ofertas y próximos lanzamientos.
+- [Launcher oficial](https://colombiamods3d.com/launcher): descarga y guía de uso del launcher para Windows.
+- [Quiénes somos](https://colombiamods3d.com/nosotros): misión, visión y equipo.
+- [Contacto y soporte](https://colombiamods3d.com/contacto): formulario de consultas, soporte y contacto comercial.
+
+## Legal
+
+- [Términos y condiciones](https://colombiamods3d.com/terminos): condiciones de uso del sitio, el launcher y el servicio CM3D Guard.
+- [Política de privacidad](https://colombiamods3d.com/privacidad): tratamiento de datos personales (Ley 1581 de 2012).
+
+## Datos
+
+- [Catálogo en JSON](https://backendmods.colombiamods3d.com/api/catalog): lista pública de mods que usan el sitio y el launcher.
+
+## Comunidad
+
+- [Discord](https://discord.gg/ssPbZwxSJQ): compras, soporte y novedades.
+- [YouTube](https://www.youtube.com/@Medinacm3D)
+- [Instagram](https://www.instagram.com/cm3dcol/)
+- [Facebook](https://www.facebook.com/colombiamods3d)

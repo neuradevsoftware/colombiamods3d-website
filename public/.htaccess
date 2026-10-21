@@ -1,0 +1,63 @@
+# Apache: URLs limpias (React Router) + seguridad + caché
+# Sin listado de directorios
+Options -Indexes
+DirectoryIndex index.html
+
+<IfModule mod_mime.c>
+  AddType model/gltf-binary .glb
+  AddType font/woff2 .woff2
+  AddType application/manifest+json .webmanifest
+  AddType application/json .json
+  AddType text/markdown .md
+  AddType application/json .map
+</IfModule>
+
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteBase /
+
+  # (Opcional) Si el backend de contacto se sirve en este mismo dominio (VITE_CONTACT_ENDPOINT=https://colombiamods3d.com/api/contact),
+  # descomenta el proxy (requiere mod_proxy + mod_proxy_http; en hosting compartido suele hacerse desde el panel):
+  # RewriteRule ^api/ http://127.0.0.1:3001%{REQUEST_URI} [P,L]
+  # Sin proxy, /api/* devuelve 404 real en vez del index.html (que rompería el fetch del formulario).
+  RewriteRule ^api/ - [R=404,L]
+
+  RewriteRule ^index\.html$ - [L]
+
+  # Archivos y carpetas reales (assets, models, imágenes, sitemap.xml...) se sirven tal cual
+  RewriteCond %{REQUEST_FILENAME} -f [OR]
+  RewriteCond %{REQUEST_FILENAME} -l
+  RewriteRule ^ - [L]
+
+  # Rutas pre-renderizadas (/catalogo -> /catalogo/index.html) sin redirección 301 a /catalogo/
+  RewriteCond %{DOCUMENT_ROOT}/$1/index.html -f
+  RewriteRule ^(.+?)/?$ /$1/index.html [L]
+
+  # Cualquier otra ruta -> index.html (React Router muestra la 404 de la app)
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteRule . /index.html [L]
+</IfModule>
+
+<IfModule mod_headers.c>
+  Header always set X-Content-Type-Options "nosniff"
+  Header always set X-Frame-Options "DENY"
+  Header always set Referrer-Policy "strict-origin-when-cross-origin"
+  Header always set Permissions-Policy "camera=(), microphone=(), geolocation=(), payment=()"
+  Header always set Strict-Transport-Security "max-age=63072000; includeSubDomains; preload"
+  Header always set Cross-Origin-Opener-Policy "same-origin"
+  Header always set Link "</.well-known/ai-catalog.json>; rel=\"ai-catalog\""
+  Header always set Content-Security-Policy "default-src 'self'; script-src 'self' 'wasm-unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https://backendmods.colombiamods3d.com; font-src 'self'; connect-src 'self' blob: https://backendmods.colombiamods3d.com; worker-src 'self' blob:; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; upgrade-insecure-requests; require-trusted-types-for 'script'"
+  <FilesMatch "\.(js|css|woff2|webp|jpg|png|ico|map)$">
+    Header set Cache-Control "public, max-age=31536000, immutable"
+  </FilesMatch>
+  <FilesMatch "\.(html|webmanifest|json|txt)$">
+    Header set Cache-Control "no-cache"
+  </FilesMatch>
+  <FilesMatch "(og-image\.jpg|favicon.*|apple-touch-icon\.png|icon-.*\.png)$">
+    Header set Cache-Control "public, max-age=86400"
+  </FilesMatch>
+</IfModule>
+
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/css application/javascript application/json application/manifest+json image/svg+xml model/gltf-binary
+</IfModule>

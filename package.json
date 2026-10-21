@@ -1,0 +1,54 @@
+{
+  "name": "colombia-mods-3d",
+  "private": true,
+  "version": "1.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "lint": "eslint .",
+    "test": "node --test",
+    "check": "npm run lint && npm run test && npm run build",
+    "optimize:model": "node scripts/optimize-glb.mjs"
+  },
+  "dependencies": {
+    "@fontsource/oswald": "^5.3.0",
+    "@fontsource/rajdhani": "^5.3.0",
+    "@fontsource/share-tech-mono": "^5.3.0",
+    "react": "^19.3.0",
+    "react-dom": "^19.3.0",
+    "react-router-dom": "^7.18.4",
+    "three": "^0.186.1"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.39.5",
+    "@gltf-transform/core": "^4.5.1",
+    "@gltf-transform/extensions": "^4.5.1",
+    "@gltf-transform/functions": "^4.5.1",
+    "@tailwindcss/vite": "^4.3.3",
+    "@vitejs/plugin-react": "^6.1.2",
+    "eslint": "^9.39.5",
+    "eslint-plugin-react": "^7.37.5",
+    "eslint-plugin-react-hooks": "^7.1.1",
+    "globals": "^17.13.0",
+    "meshoptimizer": "^1.3.0",
+    "tailwindcss": "^4.3.3",
+    "vite": "^8.3.4"
+  },
+  "description": "Sitio web de Colombia Mods 3D: mods personalizados para American Truck Simulator.",
+  "engines": {
+    "node": ">=20.19"
+  },
+  "keywords": [
+    "react",
+    "vite",
+    "tailwindcss",
+    "threejs",
+    "webgl",
+    "seo",
+    "american-truck-simulator"
+  ],
+  "author": "Colombia Mods 3D",
+  "license": "UNLICENSED"
+}

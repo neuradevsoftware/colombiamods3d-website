@@ -1,0 +1,34 @@
+{
+  "specVersion": "1.0",
+  "host": {
+    "displayName": "Colombia Mods 3D",
+    "identifier": "colombiamods3d.com"
+  },
+  "entries": [
+    {
+      "identifier": "urn:air:colombiamods3d.com:docs:llms",
+      "displayName": "Colombia Mods 3D — guía del sitio para modelos de lenguaje",
+      "type": "text/markdown",
+      "url": "https://colombiamods3d.com/llms.txt",
+      "description": "Resumen en Markdown del sitio: qué ofrece Colombia Mods 3D y dónde está cada página (catálogo, launcher, contacto, términos y privacidad).",
+      "representativeQueries": [
+        "qué es Colombia Mods 3D",
+        "dónde descargo el launcher de Colombia Mods 3D",
+        "cómo contacto el soporte de Colombia Mods 3D"
+      ]
+    },
+    {
+      "identifier": "urn:air:colombiamods3d.com:data:catalog",
+      "displayName": "Catálogo público de mods de Colombia Mods 3D",
+      "type": "application/json",
+      "url": "https://backendmods.colombiamods3d.com/api/catalog",
+      "capabilities": ["ModCatalog"],
+      "description": "Lista en JSON de los mods disponibles (camiones, trailers y accesorios para American Truck Simulator) con precios y estado de venta.",
+      "representativeQueries": [
+        "qué mods de camiones hay para American Truck Simulator",
+        "precio de los mods de Colombia Mods 3D",
+        "próximos lanzamientos de mods de Colombia Mods 3D"
+      ]
+    }
+  ]
+}

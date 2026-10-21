@@ -1,0 +1,184 @@
+@import "tailwindcss";
+
+/* ---------- Tokens de diseño (equivalen a las variables :root del HTML original) ---------- */
+@theme {
+  --color-deep: #0a0d10;
+  --color-panel: #12161a;
+  --color-panel-2: #181d22;
+  --color-card: #151a1f;
+  --color-line: #262e35;
+  --color-steel: #7d8a95;
+  --color-steel-light: #aab5bd;
+  --color-fg: #eef1f3;
+  --color-amber: #ffb020;
+  --color-amber-deep: #ff7a1a;
+  --color-danger: #e6402f;
+  --color-ok: #35d07f;
+  --color-info: #4aa8ff;
+  --color-discord: #5865f2;
+
+  --font-display: "Oswald", "Arial Narrow", sans-serif;
+  --font-body: "Rajdhani", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "Share Tech Mono", ui-monospace, monospace;
+
+  --ease-soft: cubic-bezier(0.2, 0.7, 0.2, 1);
+
+  --animate-scr: scr 0.4s var(--ease-soft);
+  --animate-rise: rise 1s var(--ease-soft) forwards;
+  --animate-fadeup: fadeup 0.8s var(--ease-soft) forwards;
+  --animate-lane: lane 0.8s linear infinite;
+  --animate-drift-far: drift 110s linear infinite;
+  --animate-drift-mid: drift 60s linear infinite;
+  --animate-drift-near: drift 32s linear infinite;
+  --animate-cue: cue 1.8s var(--ease-soft) infinite;
+  --animate-bob: bob 0.5s var(--ease-soft);
+  --animate-shake: shake 0.4s;
+  --animate-spin-fast: spin 0.7s linear infinite;
+
+  @keyframes scr { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+  @keyframes rise { to { transform: none; } }
+  @keyframes fadeup { to { opacity: 1; transform: none; } }
+  @keyframes drift { to { transform: translateX(-33.3333%); } }
+  @keyframes lane { to { background-position: -150px 0; } }
+  @keyframes cue { to { top: 110%; } }
+  @keyframes bob { 40% { transform: translateY(4px); } }
+  @keyframes shake { 20% { transform: translateX(-6px); } 50% { transform: translateX(6px); } 80% { transform: translateX(-3px); } }
+}
+
+/* Relleno horizontal con ancho máximo de 1240px (var --side del original) */
+@utility pad {
+  padding-left: var(--side);
+  padding-right: var(--side);
+}
+
+@layer base {
+  :root {
+    --gx: 32px;
+    --hh: calc(68px + env(safe-area-inset-top, 0px));
+    --side: max(var(--gx), calc((100% - 1240px) / 2));
+    box-sizing: border-box;
+  }
+  @media (max-width: 760px) {
+    :root {
+      --gx: 20px;
+      --hh: calc(60px + env(safe-area-inset-top, 0px));
+    }
+  }
+  *, *::before, *::after { box-sizing: inherit; }
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: var(--hh);
+    background: var(--color-deep);
+    height: 100%;
+  }
+  body {
+    min-height: 100%;
+    display: flex;
+    flex-direction: column;
+    background:
+      radial-gradient(ellipse at 20% -10%, rgba(255, 122, 26, 0.08), transparent 45%),
+      radial-gradient(ellipse at 100% 100%, rgba(53, 208, 127, 0.05), transparent 40%),
+      var(--color-deep);
+    background-attachment: fixed;
+    color: var(--color-fg);
+    font: 500 1.12rem/1.55 var(--font-body);
+    overflow-x: clip;
+    -webkit-font-smoothing: antialiased;
+  }
+  #root { flex: 1; display: flex; flex-direction: column; }
+  button { cursor: pointer; }
+  input, select, textarea { font: inherit; color: inherit; }
+  :focus-visible { outline: 2px solid var(--color-amber); outline-offset: 3px; border-radius: 3px; }
+  body.lock { overflow: hidden; }
+}
+
+/* ===== Ofertas y lanzamientos (mismo look que el launcher) =====
+   .promo-mod -> descuento propio del mod (ámbar/naranja) · .promo-general -> descuento general de la tienda (verde/azul)
+   .promo-soon -> próximo lanzamiento (azul/violeta). El marco gira con un conic-gradient animado vía @property. */
+@property --promo-ang { syntax: '<angle>'; initial-value: 0deg; inherits: false; }
+@keyframes promoSpin { to { --promo-ang: 360deg; } }
+@keyframes promoGlow { 0%, 100% { box-shadow: 0 0 12px -3px var(--promo-glow); } 50% { box-shadow: 0 0 26px 0 var(--promo-glow); } }
+@keyframes promoBlink { 0%, 100% { opacity: 1; } 50% { opacity: .45; } }
+.promo { --promo-a: #ffb020; --promo-b: #ff4d1a; --promo-glow: rgba(255, 140, 30, .55); }
+.promo.promo-general { --promo-a: #35d07f; --promo-b: #18a0ff; --promo-glow: rgba(53, 208, 127, .5); }
+.promo.promo-soon { --promo-a: #3b8cff; --promo-b: #8b4dff; --promo-glow: rgba(110, 120, 255, .6); }
+.promo-soon .promo-ribbon, .promo-soon .promo-banner { color: #fff; text-shadow: 0 1px 2px rgba(0, 0, 0, .35); }
+.promo-soon .promo-ribbon { animation: promoBlink 2.4s ease-in-out infinite; }
+
+.promo-card {
+  border: 2px solid transparent;
+  background:
+    linear-gradient(var(--color-card), var(--color-card)) padding-box,
+    conic-gradient(from var(--promo-ang), var(--promo-a), var(--promo-b), #fff3b0, var(--promo-b), var(--promo-a)) border-box;
+  animation: promoSpin 3.5s linear infinite, promoGlow 2.2s ease-in-out infinite;
+}
+.promo-card:hover { border-color: transparent; }
+.promo-modal {
+  border-color: var(--promo-a);
+  box-shadow: 0 30px 70px -20px rgba(0, 0, 0, .7), 0 0 0 1px var(--promo-a), 0 0 34px -4px var(--promo-glow);
+}
+.promo-ribbon {
+  position: absolute; top: 8px; right: 8px; z-index: 3; display: flex; align-items: baseline; gap: 5px;
+  padding: 3px 8px; border-radius: 3px; font-family: var(--font-mono); font-weight: 700;
+  background: linear-gradient(90deg, var(--promo-a), var(--promo-b)); color: #1a0d00;
+  box-shadow: 0 2px 10px -2px var(--promo-glow);
+}
+.promo-ribbon b { font-size: 13px; }
+.promo-ribbon span { font-size: 8.5px; letter-spacing: 1px; text-transform: uppercase; }
+.promo-banner {
+  display: flex; align-items: baseline; gap: 10px; padding: 7px 14px; border-radius: 7px;
+  font-family: var(--font-display); font-size: 13px; letter-spacing: 1px; text-transform: uppercase; color: #1a0d00;
+  background: linear-gradient(90deg, var(--promo-a), var(--promo-b));
+}
+.promo-banner b { font-size: 20px; }
+.promo-note { font-family: var(--font-mono); font-size: 11.5px; color: var(--color-steel); }
+.promo-timer {
+  display: flex; align-items: center; gap: 6px; padding: 5px 8px; border-radius: 5px;
+  font-family: var(--font-mono); font-size: 11px;
+  background: rgba(255, 176, 32, .1); border: 1px solid rgba(255, 176, 32, .35); color: var(--color-amber);
+}
+.promo-timer svg { width: 12px; height: 12px; flex: none; }
+.promo-timer .cd { margin-left: auto; font-weight: 700; letter-spacing: .3px; font-variant-numeric: tabular-nums; }
+.promo-timer.general { background: rgba(53, 208, 127, .1); border-color: rgba(53, 208, 127, .4); color: var(--color-ok); }
+.promo-timer.soon { background: rgba(74, 168, 255, .1); border-color: rgba(74, 168, 255, .4); color: var(--color-info); }
+.promo-timer.urgent .cd { color: var(--color-danger); animation: promoBlink 1s ease-in-out infinite; }
+.promo-timer.lg { font-size: 14px; padding: 8px 12px; gap: 8px; }
+.promo-timer.lg svg { width: 16px; height: 16px; }
+.promo-timer.lg .cd { font-size: 17px; }
+.promo-strips { display: flex; flex-direction: column; gap: 10px; }
+.promo-strip {
+  --promo-a: #35d07f; --promo-b: #18a0ff; --promo-glow: rgba(53, 208, 127, .45);
+  display: flex; align-items: center; gap: 14px; flex-wrap: wrap; padding: 10px 16px; border-radius: 9px;
+  border: 2px solid transparent;
+  background:
+    linear-gradient(#10171a, #10171a) padding-box,
+    conic-gradient(from var(--promo-ang), var(--promo-a), var(--promo-b), #d8fff0, var(--promo-b), var(--promo-a)) border-box;
+  animation: promoSpin 4s linear infinite, promoGlow 2.4s ease-in-out infinite;
+  font-family: var(--font-display); text-transform: uppercase; letter-spacing: .8px; font-size: 14px; text-align: left;
+}
+.promo-strip .ps-pct { font-size: 24px; font-weight: 700; color: var(--color-ok); line-height: 1; }
+.promo-strip .ps-text { color: var(--color-fg); }
+.promo-strip .promo-timer { margin-left: auto; }
+.promo-strip.soon { --promo-a: #3b8cff; --promo-b: #8b4dff; --promo-glow: rgba(110, 120, 255, .5); cursor: pointer; }
+.promo-strip.soon .ps-pct { color: #a9c8ff; font-size: 20px; letter-spacing: 1px; }
+.promo-strip.soon .ps-text b { color: #fff; }
+.promo-strip.soon .ps-text i { font-style: normal; color: var(--color-steel-light); font-size: 12px; }
+@media (max-width: 560px) { .promo-strip .promo-timer { margin-left: 0; width: 100%; } }
+
+@keyframes mobile-menu-enter {
+  from { opacity: 0; transform: translateY(18px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.mobile-menu-link-enter {
+  animation: mobile-menu-enter 520ms var(--ease-soft) both;
+  animation-delay: var(--menu-delay, 0ms);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation: none !important;
+    transition-duration: 0.01ms !important;
+    transition-delay: 0s !important;
+  }
+}
